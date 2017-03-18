@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Christopher Schwardt">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Toggle Styles */
+
+        #wrapper {
+            padding-left: 0;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+
+        #menu-button {
+            position: absolute;
+            left: -40px;
+            top: -15px;
+            margin: 0;
+        }
+
+        #menu-button.toggled {
+            left: -150px;
+        }
+
+        /*#content-container {
+            padding-left: 45px;
+        }*/
+
+        #wrapper.toggled {
+            padding-left: 150px;
+        }
+
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            left: 150px;
+            width: 0;
+            height: 100%;
+            margin-left: -150px;
+            overflow-y: auto;
+            background: #000;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            width: 150px;
+        }
+
+        #page-content-wrapper {
+            width: 100%;
+            position: absolute;
+            padding: 15px;
+            padding-left: 40px;
+        }
+
+        #wrapper.toggled #page-content-wrapper {
+            position: absolute;
+            margin-right: -150px;
+            padding: 15px;
+        }
+
+        /* Sidebar Styles */
+
+        .sidebar-nav {
+            position: absolute;
+            top: 0;
+            width: 150px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            text-indent: 10px;
+            line-height: 40px;
+        }
+
+        .sidebar-nav li a {
+            display: block;
+            text-decoration: none;
+            color: #999999;
+        }
+
+        .sidebar-nav li a:hover {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+
+        .sidebar-nav > .sidebar-brand {
+            height: 65px;
+            font-size: 18px;
+            line-height: 60px;
+        }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+        .sidebar-nav > .sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+
+        /*@media(min-width:768px) {*/
+            #wrapper {
+                padding-left: 0;
+            }
+
+            #wrapper.toggled {
+                padding-left: 150px;
+            }
+
+            #sidebar-wrapper {
+                width: 0;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                width: 150px;
+            }
+
+            #page-content-wrapper {
+                padding: 20px;
+                padding-left: 40px;
+                position: relative;
+            }
+
+            #wrapper.toggled #page-content-wrapper {
+                position: relative;
+                margin-right: 0;
+                padding: 20px;
+            }
+        /*}*/
+
+        .tt {
+            font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+        }
+        .align-right {
+            text-align: right;
+        }
+        .sidebar-brand {
+            color: lightgrey;
+        }
+        #menu-button-inline {
+            color: lightgrey;
+        }
+        .list-group-item-button {
+            padding: 1px;
+        }
+        .poll-option-button {
+            text-align: left;
+        }
+        .add-element-container {
+            border: 1px solid darkgray;
+            border-radius: 3px;
+            background-color: lightgray;
+            padding: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!--navigation-->
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    PollNG
+                    <button id="menu-button-inline" type="button" class="btn btn-default bg-inverse">
+                        <span class="sr-only">Toggle menu</span>
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </button>
+                </li>
+                <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i><span>&nbsp; Home</span></a></li>
+                <!--<li><a href="#info"><i class="fa fa-pencil" aria-hidden="true"></i><span> Link2 </span></a></li>-->
+                <!--<li><a href="#love"><i class="fa fa-edit" aria-hidden="true"></i><span> Link3 </span></a></li>-->
+                <!--<li><a href="#user"><i class="fa fa-check" aria-hidden="true"></i><span> Link4.5 </span></a></li>-->
+                <!--<li><a href="#contact"><i class="fa fa-envelope" aria-hidden="true"></i><span> Link5 </span></a></li>-->
+                {% if user.is_authenticated %}
+                <li><a href="#user"><i class="fa fa-user" aria-hidden="true"></i><span>&nbsp; {{user.username}}</span></a></li>
+                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i><span>&nbsp; Logout</span></a></li>
+                <li><a href="{% url 'create-poll' %}"><i class="fa fa-plus-square" aria-hidden="true"></i><span>&nbsp; Create poll</span></a></li>
+                {% else %}
+                <li><a href="{% url 'register' %}"><i class="fa fa-user-plus" aria-hidden="true"></i><span>&nbsp; Register</span></a></li>
+                <li><a href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i><span>&nbsp; Login</span></a></li>
+                {% endif %}
+                {% if my_polls %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Your polls <b class="caret"></b></a>
+                    <ul class="dropdown-menu bg-inverse">
+                        {% for poll in my_polls %}
+                        <li><a href="{% url 'poll' id=poll.id %}">{{poll.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <div id="content-container" class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <button id="menu-button" type="button" class="btn btn-default toggled">
+                            <span class="sr-only">Toggle menu</span>
+                            <i class="fa fa-bars" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+    {% block content %}
+    {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/assets/js/ie10-viewport-bug-workaround.js"></script>-->
+<script>
+    $("#menu-button").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $("#menu-button").toggleClass("toggled");
+    });
+    $("#menu-button-inline").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $("#menu-button").toggleClass("toggled");
+    });
+    {% block javascript %}
+    {% endblock %}
+ </script>
+</body>
+</html>

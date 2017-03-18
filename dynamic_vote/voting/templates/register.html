@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+    <h2>Registration</h2>
+    <form method="post" id="registration-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+    $(document).ready(function() {
+        $('#registration-form').find("input, select, textarea").each(function(index, element) {
+            $(element).addClass("form-control");
+        });
+        $('#registration-form').find("span").each(function(index, element) {
+            $(element).addClass("text-muted");
+        });
+    });
+{% endblock %}

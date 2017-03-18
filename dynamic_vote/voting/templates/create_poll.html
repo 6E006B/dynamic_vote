@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Poll{% endblock %}
+
+{% block content %}
+    <h2>Create Poll</h2>
+    <form method="post" id="poll-form">
+        {% csrf_token %}
+        {{ poll_form.as_p }}
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+    $(document).ready(function() {
+        $('#poll-form').find("input, select, textarea").each(function(index, element) {
+            $(element).addClass("form-control");
+        });
+        $('#poll-form').find("span").each(function(index, element) {
+            $(element).addClass("text-muted");
+        });
+    });
+{% endblock %}
