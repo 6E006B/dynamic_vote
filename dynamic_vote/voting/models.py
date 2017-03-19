@@ -11,6 +11,9 @@ class Poll(models.Model):
     private = models.BooleanField(default=False, blank=True)
     creator = models.ForeignKey(User, default=None, blank=True, null=True)
 
+    def __str__(self):
+        return '({}) {} by {}'.format(self.id, self.title, self.creator)
+
     @staticmethod
     def get_polls_for(user):
         user_polls = Poll.objects.filter(
@@ -25,14 +28,23 @@ class PollMember(models.Model):
     user = models.ForeignKey(User)
     poll = models.ForeignKey(Poll, related_name='members')
 
+    def __str__(self):
+        return '{}@"{}"'.format(self.user, self.poll)
+
 
 class PollOption(models.Model):
     poll = models.ForeignKey(Poll, related_name='options')
     text = models.CharField(max_length=128)
     creator = models.ForeignKey(User)
 
+    def __str__(self):
+        return '{} by {} for {}'.format(self.text, self.creator, self.poll)
+
 
 class Vote(models.Model):
     user = models.ForeignKey(User)
     option = models.ForeignKey(PollOption, related_name='votes')
     score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return '{} votes {} ({})'.format(self.user, self.option, self.score)
