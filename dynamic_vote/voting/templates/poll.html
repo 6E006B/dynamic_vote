@@ -1,24 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="post">{% csrf_token %}
-    <div class="row">
-        <div class="col">
-            <h4 class="">{{poll.title}}</h4>
-        </div>
+<div class="row">
+    <div class="col">
+        <h4 class="">{{poll.title}}</h4>
     </div>
-    <div class="row">
-        <div class="col">
-            <p class="">{{poll.description}}</p>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p class="">{{poll.description}}</p>
     </div>
-    {% for option_struct in options_struct %}
+</div>
+<form method="post" id="vote-form">{% csrf_token %}
+    <input type="hidden" name="option" id="option-input" />
+{% for option_struct in options_struct %}
     <div class="row no-gutters add-element-container" id="option_row_{{option_struct.option.id}}">
         <!--<div class="col col-sm-auto">-->
             <!--<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#details-{{option_struct.option.id}}"><i class="fa fa-list"></i></button>-->
         <!--</div>-->
         <div class="col col-10">
-            <div type="submit" name="option" value="{{option_struct.option.id}}" class=" container btn {% if option_struct.score < 0 %}btn-warning{% elif option_struct.score == max_score and max_score is not 0 %}btn-success{% else %}btn-info{% endif %} btn-block">
+            <div onclick="vote({{option_struct.option.id}})" class=" container btn {% if option_struct.score < 0 %}btn-warning{% elif option_struct.score == max_score and max_score is not 0 %}btn-success{% else %}btn-info{% endif %} btn-block">
                 <div class="row">
                     <div class="col col-1" style="text-align: left;">
                         <span class="badge badge-default badge-pill">{{option_struct.score}}</span>&nbsp;
@@ -45,7 +46,9 @@
         </div>
         {% endif %}
     </div>
-    {% endfor %}
+{% endfor %}
+</form>
+<form method="post">{% csrf_token %}
     <div class="row no-gutters add-element-container">
         <div class="col col-sm-2 d-flex align-items-center" style="text-align: right;">
             <label for="add-element-input" style="width:100%;">Add element:&nbsp;</label>
@@ -64,6 +67,11 @@
 {% endblock %}
 
 {% block javascript %}
+    function vote(id) {
+        $('#option-input').val(id);
+        $('#vote-form').submit();
+    }
+
     function delete_option(id) {
         $.ajax({
             method: "POST",
