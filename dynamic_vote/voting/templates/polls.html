@@ -14,7 +14,7 @@
             <ul class="list-group list-group-flush">
             {% for option in poll.get_top_voted_options %}
                 <li class="list-group-item list-group-item-info justify-content-between">
-                    {{option.text}}
+                    {{forloop.counter}}. {{option.text}}
                     <span class="badge badge-default badge-pill">{{option.num_votes}}</span>
                 </li>
             {% endfor %}
