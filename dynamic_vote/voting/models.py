@@ -12,7 +12,7 @@ class Poll(models.Model):
     creator = models.ForeignKey(User, default=None, blank=True, null=True)
 
     def get_top_voted_options(self, number=3):
-        return self.options.annotate(num_votes=Count('votes')).order_by('-num_votes')[:number]
+        return self.options.annotate(num_votes=Count('votes')).filter(num_votes__gt=0).order_by('-num_votes')[:number]
 
     def __str__(self):
         return '({}) {} by {}'.format(self.id, self.title, self.creator)
