@@ -7,8 +7,12 @@
     <form method="post" id="login-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-primary" type="submit">Login</button>
+        <span>
+            <button class="btn btn-primary" type="submit">Login</button>&nbsp;
+            <a href="{% url 'register' %}">Registration</a>
+        </span>
     </form>
+
 {% endblock %}
 
 {% block javascript %}
