@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q
+from django.db.models import Count, Q
 
 
 class Poll(models.Model):
@@ -10,6 +10,9 @@ class Poll(models.Model):
     description = models.TextField()
     private = models.BooleanField(default=False, blank=True)
     creator = models.ForeignKey(User, default=None, blank=True, null=True)
+
+    def get_top_voted_options(self, number=3):
+        return self.options.annotate(num_votes=Count('votes')).order_by('-num_votes')[:number]
 
     def __str__(self):
         return '({}) {} by {}'.format(self.id, self.title, self.creator)
