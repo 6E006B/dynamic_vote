@@ -13,13 +13,13 @@
             </div>
             <ul class="list-group list-group-flush">
             {% for option in poll.get_top_voted_options %}
-                <li class="list-group-item justify-content-between">
+                <li class="list-group-item list-group-item-info justify-content-between">
                     {{option.text}}
                     <span class="badge badge-default badge-pill">{{option.num_votes}}</span>
                 </li>
             {% endfor %}
             </ul>
-            <a href="{% url 'poll' id=poll.id %}" class="list-group-item list-group-item-action list-group-item-info btn-block">Show poll</a>
+            <button onclick="document.location = '{% url 'poll' id=poll.id %}';" class="btn btn-primary btn-block">Show poll</button>
         </div>
     </div>
     {% endfor %}
