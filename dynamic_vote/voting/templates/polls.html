@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for poll in my_polls %}
+    <div class="col">
+        <a href="{% url 'poll' id=poll.id %}" class="card">
+            <div class="card-block">
+                <h5 class="card-title">{{poll.title}}</h5>
+                <div class="card-text">{{poll.description}}</div>
+            </div>
+            <ul class="list-group list-group-flush">
+            {% for option in poll.get_top_voted_options %}
+                <li class="list-group-item">
+                    <span class="badge badge-default badge-pill">{{option.num_votes}}</span>&nbsp;{{option.text}}
+                </li>
+            {% endfor %}
+            </ul>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -19,7 +19,7 @@ class PollsView(View):
         my_polls = None
         if user.is_authenticated():
             my_polls = Poll.get_polls_for(user)
-        return render(request, 'base.html', {
+        return render(request, 'polls.html', {
             'user': user,
             'my_polls': my_polls,
         })
